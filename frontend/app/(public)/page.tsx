@@ -78,7 +78,7 @@ export default function HomePage() {
             alt={strings.site.name}
             width={180}
             height={180}
-            className="mx-auto mb-5 shadow-2xl shadow-primary-950/60"
+            className="mx-auto mb-5"
           />
           <p className="text-primary-300 text-sm font-medium tracking-widest uppercase mb-3">
             {strings.site.location}
