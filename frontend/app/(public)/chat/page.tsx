@@ -1,18 +1,15 @@
 "use client";
 
 import Link from "next/link";
-import { Sparkles } from "lucide-react";
 import { FaWhatsapp } from "react-icons/fa";
 import { Button } from "@/components/ui/Button";
 
 export default function ChatPage() {
   return (
-    <div className="min-h-[60vh] flex items-center justify-center px-6">
-      <div className="max-w-md text-center">
-        <div className="w-14 h-14 rounded-full bg-primary-100 dark:bg-primary-900 flex items-center justify-center mx-auto mb-5">
-          <Sparkles size={24} className="text-primary-600 dark:text-primary-400" />
-        </div>
+    <div className="relative min-h-[80vh] flex items-center justify-center px-6 overflow-hidden">
 
+      {/* Conteúdo — sempre centralizado */}
+      <div className="relative z-10 max-w-md text-center">
         <h1 className="text-2xl font-bold text-foreground mb-3">
           Em breve: recomendações por IA
         </h1>
@@ -24,7 +21,7 @@ export default function ChatPage() {
           pelo WhatsApp.
         </p>
 
-        <div className="flex flex-wrap justify-center gap-3">
+        <div className="flex flex-wrap justify-center md:justify-start gap-3">
           <a
             href="https://wa.me/5562984818938"
             target="_blank"
@@ -42,6 +39,13 @@ export default function ChatPage() {
           </Link>
         </div>
       </div>
+
+      {/* Avatar — absoluto colado no rodapé em ambos os tamanhos */}
+      <img
+        src="/avatar-larinha.png"
+        alt="Lara"
+        className="absolute bottom-0 left-0 h-36 md:h-[90%] w-auto object-contain object-bottom pointer-events-none select-none"
+      />
     </div>
   );
 }

@@ -76,7 +76,13 @@ export function HeaderSearch() {
             aria-label="Buscar"
             className="text-muted hover:text-primary-600 -mr-2"
           >
-            <Search size={17} />
+            {loading ? (
+              <span className="w-[17px] h-[17px] border-2 border-muted border-t-primary-500 rounded-full animate-spin block" />
+            ) : query.length >= 2 && !open ? (
+              <span className="w-2 h-2 rounded-full bg-primary-400 block" />
+            ) : (
+              <Search size={17} />
+            )}
           </Button>
         }
       />
