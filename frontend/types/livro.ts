@@ -12,6 +12,7 @@ export interface Livro {
   autor: string;
   slug: string;
   preco: number;
+  preco_oferta: number | null;
   preco_compra: number | null;
   condicao: Condicao;
   descricao: string;
@@ -24,6 +25,7 @@ export interface LivroCreate {
   titulo: string;
   autor: string;
   preco: number;
+  preco_oferta: number | null;
   preco_compra: number | null;
   condicao: Condicao;
   descricao: string;
@@ -45,6 +47,7 @@ export interface LivrosFiltros {
   preco_min?: number;
   preco_max?: number;
   ordenar?: "preco_asc" | "preco_desc" | "recente";
+  apenas_ofertas?: boolean;
 }
 
 export interface LivrosResposta {

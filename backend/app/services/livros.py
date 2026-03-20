@@ -14,9 +14,12 @@ async def listar(
     preco_min: float | None,
     preco_max: float | None,
     ordenar: str | None,
+    apenas_ofertas: bool | None = None,
 ) -> dict:
     query = select(Livro).where(Livro.disponivel == True).options(selectinload(Livro.generos))  # noqa: E712
 
+    if apenas_ofertas:
+        query = query.where(Livro.preco_oferta.isnot(None))
     if q:
         query = query.where(or_(Livro.titulo.ilike(f"%{q}%"), Livro.autor.ilike(f"%{q}%")))
     if condicao:

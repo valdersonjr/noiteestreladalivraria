@@ -7,6 +7,7 @@ class LivroCreate(BaseModel):
     titulo: str
     autor: str
     preco: float
+    preco_oferta: float | None = None
     preco_compra: float | None = None
     condicao: str
     descricao: str
@@ -19,6 +20,7 @@ class LivroUpdate(BaseModel):
     titulo: str | None = None
     autor: str | None = None
     preco: float | None = None
+    preco_oferta: float | None = None
     preco_compra: float | None = None
     condicao: str | None = None
     descricao: str | None = None
@@ -37,6 +39,7 @@ class LivroSchema(BaseModel):
     autor: str
     slug: str
     preco: float
+    preco_oferta: float | None
     preco_compra: float | None
     condicao: str
     descricao: str

@@ -6,6 +6,7 @@ export default function OfertasPage() {
       title="✨ Ofertas"
       subtitle="Os melhores preços da livraria, em livros novos e usados."
       defaultOrdenar="preco_asc"
+      apenasOfertas
     />
   );
 }

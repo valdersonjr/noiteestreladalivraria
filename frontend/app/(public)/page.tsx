@@ -38,7 +38,7 @@ export default function HomePage() {
         const [resNovos, resUsados, resOfertas] = await Promise.all([
           livrosService.listar({ condicao: "novo", ordenar: "recente" }),
           livrosService.listar({ condicao: "usado", ordenar: "recente" }),
-          livrosService.listar({ ordenar: "preco_asc" }),
+          livrosService.listar({ apenas_ofertas: true, ordenar: "preco_asc" }),
         ]);
         setNovos(resNovos.items.slice(0, PREVIEW_COUNT));
         setUsados(resUsados.items.slice(0, PREVIEW_COUNT));

@@ -22,9 +22,10 @@ async def listar_livros(
     preco_min: float | None = None,
     preco_max: float | None = None,
     ordenar: str | None = None,
+    apenas_ofertas: bool | None = None,
     db: AsyncSession = Depends(get_db),
 ):
-    return await livros_service.listar(db, q, condicao, genero, preco_min, preco_max, ordenar)
+    return await livros_service.listar(db, q, condicao, genero, preco_min, preco_max, ordenar, apenas_ofertas)
 
 
 @router.get("/{slug}", response_model=LivroSchema)

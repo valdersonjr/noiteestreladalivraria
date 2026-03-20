@@ -22,6 +22,7 @@ class Livro(Base):
     autor: Mapped[str] = mapped_column(String(255))
     slug: Mapped[str] = mapped_column(String(255), unique=True, index=True)
     preco: Mapped[float] = mapped_column(Numeric(10, 2))
+    preco_oferta: Mapped[float | None] = mapped_column(Numeric(10, 2), nullable=True)
     preco_compra: Mapped[float | None] = mapped_column(Numeric(10, 2), nullable=True)
     condicao: Mapped[str] = mapped_column(String(10))
     descricao: Mapped[str] = mapped_column(Text)

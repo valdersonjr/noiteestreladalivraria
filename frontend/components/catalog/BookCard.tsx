@@ -76,9 +76,20 @@ export function BookCard({ livro }: BookCardProps) {
           </p>
 
           <div className="mt-auto pt-2">
-            <span className="text-base font-bold text-primary-600 dark:text-primary-400">
-              R$ {livro.preco.toFixed(2)}
-            </span>
+            {livro.preco_oferta != null ? (
+              <div className="flex flex-col gap-0.5">
+                <span className="text-xs text-muted line-through leading-none">
+                  R$ {livro.preco.toFixed(2)}
+                </span>
+                <span className="text-base font-bold text-red-600 dark:text-red-400">
+                  R$ {livro.preco_oferta.toFixed(2)}
+                </span>
+              </div>
+            ) : (
+              <span className="text-base font-bold text-primary-600 dark:text-primary-400">
+                R$ {livro.preco.toFixed(2)}
+              </span>
+            )}
           </div>
         </div>
       </Link>

@@ -13,6 +13,7 @@ interface CatalogPageClientProps {
   subtitle: string;
   condicao?: Condicao;
   defaultOrdenar?: LivrosFiltros["ordenar"];
+  apenasOfertas?: boolean;
 }
 
 const SORT_OPTIONS: { value: NonNullable<LivrosFiltros["ordenar"]>; label: string }[] = [
@@ -28,6 +29,7 @@ export function CatalogPageClient({
   subtitle,
   condicao,
   defaultOrdenar = "recente",
+  apenasOfertas,
 }: CatalogPageClientProps) {
   const [livros, setLivros] = useState<Livro[]>([]);
   const [generos, setGeneros] = useState<Genero[]>([]);
@@ -52,6 +54,7 @@ export function CatalogPageClient({
           q: q || undefined,
           genero: genero || undefined,
           ordenar,
+          apenas_ofertas: apenasOfertas || undefined,
         })
         .then((res) => setLivros(res.items))
         .finally(() => setLoading(false));
@@ -59,7 +62,7 @@ export function CatalogPageClient({
     return () => {
       if (debounceRef.current) clearTimeout(debounceRef.current);
     };
-  }, [q, genero, ordenar, condicao]);
+  }, [q, genero, ordenar, condicao, apenasOfertas]);
 
   const generoOptions = [
     { value: "", label: "Todos os gêneros" },
