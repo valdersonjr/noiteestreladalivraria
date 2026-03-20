@@ -30,6 +30,7 @@ export default function HomePage() {
   const [novos, setNovos] = useState<Livro[]>([]);
   const [usados, setUsados] = useState<Livro[]>([]);
   const [ofertas, setOfertas] = useState<Livro[]>([]);
+  const [totalOfertas, setTotalOfertas] = useState<number>(0);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -43,6 +44,7 @@ export default function HomePage() {
         setNovos(resNovos.items.slice(0, PREVIEW_COUNT));
         setUsados(resUsados.items.slice(0, PREVIEW_COUNT));
         setOfertas(resOfertas.items.slice(0, PREVIEW_COUNT));
+        setTotalOfertas(resOfertas.total);
       } finally {
         setLoading(false);
       }
@@ -128,6 +130,7 @@ export default function HomePage() {
           livros={ofertas}
           verTodosHref="/ofertas"
           loading={loading}
+          total={totalOfertas}
         />
 
         <BookSection

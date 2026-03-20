@@ -7,6 +7,7 @@ import { Select } from "@/components/ui/Select";
 import { BookCard } from "./BookCard";
 import { livrosService } from "@/services/livros";
 import { Condicao, Genero, Livro, LivrosFiltros } from "@/types/livro";
+import { BackToTop } from "@/components/ui/BackToTop";
 
 interface CatalogPageClientProps {
   title: string;
@@ -36,6 +37,7 @@ export function CatalogPageClient({
   const [loading, setLoading] = useState(true);
   const [q, setQ] = useState("");
   const [genero, setGenero] = useState("");
+  const [condicaoFiltro, setCondicaoFiltro] = useState<Condicao | "">("");
   const [ordenar, setOrdenar] = useState<LivrosFiltros["ordenar"]>(defaultOrdenar);
 
   const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -50,7 +52,7 @@ export function CatalogPageClient({
       setLoading(true);
       livrosService
         .listar({
-          condicao,
+          condicao: condicao || (condicaoFiltro || undefined),
           q: q || undefined,
           genero: genero || undefined,
           ordenar,
@@ -62,7 +64,7 @@ export function CatalogPageClient({
     return () => {
       if (debounceRef.current) clearTimeout(debounceRef.current);
     };
-  }, [q, genero, ordenar, condicao, apenasOfertas]);
+  }, [q, genero, ordenar, condicao, condicaoFiltro, apenasOfertas]);
 
   const generoOptions = [
     { value: "", label: "Todos os gêneros" },
@@ -87,6 +89,18 @@ export function CatalogPageClient({
             leftIcon={<Search size={15} />}
           />
         </div>
+        {!condicao && (
+          <Select
+            value={condicaoFiltro}
+            onChange={(e) => setCondicaoFiltro(e.target.value as Condicao | "")}
+            options={[
+              { value: "", label: "Novo e Usado" },
+              { value: "novo", label: "Somente Novos" },
+              { value: "usado", label: "Somente Usados" },
+            ]}
+            className="w-44"
+          />
+        )}
         <Select
           value={genero}
           onChange={(e) => setGenero(e.target.value)}
@@ -144,6 +158,8 @@ export function CatalogPageClient({
           ))}
         </div>
       )}
+
+      <BackToTop />
     </div>
   );
 }

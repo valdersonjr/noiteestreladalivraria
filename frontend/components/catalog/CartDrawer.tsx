@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { X, ShoppingCart, Trash2 } from "lucide-react";
+import { X, ShoppingCart, Trash2, Minus, Plus } from "lucide-react";
 import { FaWhatsapp } from "react-icons/fa";
 import { Button } from "@/components/ui/Button";
 import { useCart } from "@/context/CartContext";
@@ -14,8 +14,14 @@ function buildWhatsappMessage(
   items: ReturnType<typeof useCart>["items"],
   total: number
 ) {
+  const condicaoLabel = (c: "novo" | "usado") => (c === "novo" ? "Novo" : "Usado");
+
   const lista = items
-    .map((item) => `📚 *${item.titulo}* de ${item.autor} por R$ ${item.preco.toFixed(2).replace(".", ",")}`)
+    .map((item) => {
+      const qtd = item.quantidade > 1 ? ` (x${item.quantidade})` : "";
+      const preco = (item.preco * item.quantidade).toFixed(2).replace(".", ",");
+      return `📚 *${item.titulo}* — ${item.autor} — ${condicaoLabel(item.condicao)}${qtd} — R$ ${preco}`;
+    })
     .join("\n");
 
   return (
@@ -29,9 +35,13 @@ function buildWhatsappMessage(
 function CartItemRow({
   item,
   onRemove,
+  onIncrease,
+  onDecrease,
 }: {
   item: ReturnType<typeof useCart>["items"][0];
   onRemove: () => void;
+  onIncrease: () => void;
+  onDecrease: () => void;
 }) {
   const [imgError, setImgError] = useState(false);
 
@@ -62,9 +72,46 @@ function CartItemRow({
           {item.titulo}
         </Link>
         <p className="text-xs text-muted mt-0.5 line-clamp-1">{item.autor}</p>
-        <p className="text-sm font-bold text-primary-600 dark:text-primary-400 mt-1">
-          R$ {item.preco.toFixed(2).replace(".", ",")}
-        </p>
+
+        {/* Preço */}
+        <div className="flex items-center gap-1.5 mt-1">
+          {item.preco_original != null && (
+            <span className="text-[11px] text-muted line-through">
+              R$ {item.preco_original.toFixed(2).replace(".", ",")}
+            </span>
+          )}
+          <span
+            className={[
+              "text-sm font-bold",
+              item.preco_original != null
+                ? "text-red-600 dark:text-red-400"
+                : "text-primary-600 dark:text-primary-400",
+            ].join(" ")}
+          >
+            R$ {item.preco.toFixed(2).replace(".", ",")}
+          </span>
+        </div>
+
+        {/* Controles de quantidade */}
+        <div className="flex items-center gap-2 mt-2">
+          <button
+            onClick={onDecrease}
+            aria-label="Diminuir quantidade"
+            className="w-6 h-6 rounded-full border border-border flex items-center justify-center text-muted hover:text-foreground hover:border-primary-400 transition-colors"
+          >
+            <Minus size={10} />
+          </button>
+          <span className="text-xs font-semibold text-foreground w-4 text-center">
+            {item.quantidade}
+          </span>
+          <button
+            onClick={onIncrease}
+            aria-label="Aumentar quantidade"
+            className="w-6 h-6 rounded-full border border-border flex items-center justify-center text-muted hover:text-foreground hover:border-primary-400 transition-colors"
+          >
+            <Plus size={10} />
+          </button>
+        </div>
       </div>
 
       {/* Remover */}
@@ -80,10 +127,9 @@ function CartItemRow({
 }
 
 export function CartDrawer() {
-  const { items, isOpen, closeCart, removeItem, clearCart, count, total } =
+  const { items, isOpen, closeCart, removeItem, increaseQty, decreaseQty, clearCart, count, total } =
     useCart();
 
-  // Trava o scroll do body quando o drawer está aberto
   useEffect(() => {
     document.body.style.overflow = isOpen ? "hidden" : "";
     return () => {
@@ -143,21 +189,13 @@ export function CartDrawer() {
 
         {/* Conteúdo */}
         {count === 0 ? (
-          /* Estado vazio */
           <div className="flex-1 flex flex-col items-center justify-center text-center px-6 gap-3">
             <span className="text-5xl">📚</span>
-            <p className="font-semibold text-foreground">
-              {strings.cart.empty}
-            </p>
+            <p className="font-semibold text-foreground">{strings.cart.empty}</p>
             <p className="text-sm text-muted leading-relaxed">
               Explore o catálogo e adicione os livros que quiser.
             </p>
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={closeCart}
-              className="mt-2"
-            >
+            <Button variant="outline" size="sm" onClick={closeCart} className="mt-2">
               <Link href="/">Ver catálogo</Link>
             </Button>
           </div>
@@ -170,6 +208,8 @@ export function CartDrawer() {
                   key={item.id}
                   item={item}
                   onRemove={() => removeItem(item.id)}
+                  onIncrease={() => increaseQty(item.id)}
+                  onDecrease={() => decreaseQty(item.id)}
                 />
               ))}
             </div>
@@ -186,8 +226,7 @@ export function CartDrawer() {
 
               {/* Nota */}
               <p className="text-xs text-muted leading-relaxed bg-primary-50 dark:bg-primary-950/50 rounded-xl p-3 border border-primary-100 dark:border-primary-900">
-                Você será redirecionado para o WhatsApp para confirmar os livros
-                e combinar entrega ou retirada com a loja. 🌟
+                Você será redirecionado para o WhatsApp. Após o envio, aguarde nossa confirmação de disponibilidade — geralmente em menos de 1h. 🌟
               </p>
 
               {/* CTA */}

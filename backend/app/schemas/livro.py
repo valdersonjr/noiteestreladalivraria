@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from pydantic import BaseModel, ConfigDict
 
 from app.schemas.genero import GeneroSchema
@@ -46,6 +48,7 @@ class LivroSchema(BaseModel):
     foto: str
     disponivel: bool
     generos: list[GeneroSchema]
+    criado_em: datetime
 
     model_config = ConfigDict(from_attributes=True)
 

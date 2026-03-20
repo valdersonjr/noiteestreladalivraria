@@ -19,6 +19,7 @@ export interface Livro {
   foto: string;
   generos: Genero[];
   disponivel: boolean;
+  criado_em: string;
 }
 
 export interface LivroCreate {

@@ -8,6 +8,7 @@ interface BookSectionProps {
   livros: Livro[];
   verTodosHref: string;
   loading?: boolean;
+  total?: number;
 }
 
 const SKELETON_COUNT = 6;
@@ -18,13 +19,23 @@ export function BookSection({
   livros,
   verTodosHref,
   loading = false,
+  total,
 }: BookSectionProps) {
   return (
     <section className="space-y-4">
       <div className="flex items-end justify-between gap-4">
         <div>
           <h2 className="text-xl font-bold text-foreground">{title}</h2>
-          {subtitle && <p className="text-sm text-muted mt-0.5">{subtitle}</p>}
+          {subtitle && (
+            <p className="text-sm text-muted mt-0.5">
+              {subtitle}
+              {total != null && total > 0 && (
+                <span className="ml-1.5 text-xs font-semibold text-primary-500">
+                  · {total} livro{total !== 1 ? "s" : ""}
+                </span>
+              )}
+            </p>
+          )}
         </div>
         <Link
           href={verTodosHref}

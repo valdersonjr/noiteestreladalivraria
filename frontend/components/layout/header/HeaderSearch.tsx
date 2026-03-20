@@ -124,17 +124,42 @@ export function HeaderSearch() {
                     </div>
 
                     {/* Info */}
-                    <div className="min-w-0">
+                    <div className="min-w-0 flex-1">
                       <p className="text-sm font-medium text-foreground truncate">
                         {livro.titulo}
                       </p>
-                      <p className="text-xs text-muted truncate">{livro.autor}</p>
+                      <div className="flex items-center gap-1.5 mt-0.5">
+                        <p className="text-xs text-muted truncate">{livro.autor}</p>
+                        <span
+                          className={[
+                            "shrink-0 text-[10px] font-semibold px-1.5 py-px rounded-full",
+                            livro.condicao === "novo"
+                              ? "bg-primary-100 text-primary-700 dark:bg-primary-900 dark:text-primary-300"
+                              : "bg-neutral-100 text-neutral-600 dark:bg-neutral-800 dark:text-neutral-400",
+                          ].join(" ")}
+                        >
+                          {livro.condicao === "novo" ? "Novo" : "Usado"}
+                        </span>
+                      </div>
                     </div>
 
                     {/* Preço */}
-                    <span className="ml-auto shrink-0 text-xs font-semibold text-primary-600 dark:text-primary-400">
-                      R$ {livro.preco.toFixed(2).replace(".", ",")}
-                    </span>
+                    <div className="ml-2 shrink-0 text-right">
+                      {livro.preco_oferta != null ? (
+                        <div className="flex flex-col items-end">
+                          <span className="text-[10px] text-muted line-through leading-none">
+                            R$ {livro.preco.toFixed(2).replace(".", ",")}
+                          </span>
+                          <span className="text-xs font-bold text-red-600 dark:text-red-400">
+                            R$ {livro.preco_oferta.toFixed(2).replace(".", ",")}
+                          </span>
+                        </div>
+                      ) : (
+                        <span className="text-xs font-semibold text-primary-600 dark:text-primary-400">
+                          R$ {livro.preco.toFixed(2).replace(".", ",")}
+                        </span>
+                      )}
+                    </div>
                   </Link>
                 </li>
               ))}
