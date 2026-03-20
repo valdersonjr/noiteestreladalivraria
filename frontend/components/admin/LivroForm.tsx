@@ -28,6 +28,7 @@ export function LivroForm({ defaultValues = {}, onSubmit }: LivroFormProps) {
     titulo: defaultValues.titulo ?? "",
     autor: defaultValues.autor ?? "",
     preco: defaultValues.preco ?? 0,
+    preco_oferta: defaultValues.preco_oferta ?? null,
     preco_compra: defaultValues.preco_compra ?? null,
     condicao: defaultValues.condicao ?? "novo",
     descricao: defaultValues.descricao ?? "",
@@ -97,6 +98,20 @@ export function LivroForm({ defaultValues = {}, onSubmit }: LivroFormProps) {
           value={form.preco || ""}
           onChange={(e) => set("preco", parseFloat(e.target.value) || 0)}
           required
+        />
+      </div>
+
+      <div>
+        <label className="block text-sm font-medium text-foreground mb-1">
+          Preço de oferta
+          <span className="ml-2 text-xs font-normal text-muted">Deixe em branco se não estiver em oferta</span>
+        </label>
+        <Input
+          type="number"
+          step="0.01"
+          min="0"
+          value={form.preco_oferta ?? ""}
+          onChange={(e) => set("preco_oferta", e.target.value ? parseFloat(e.target.value) : null)}
         />
       </div>
 
